@@ -1,6 +1,12 @@
 const express = require("express");
 const app = express();
-const { getUsers, createUsers, userDeposit } = require("./utils");
+const {
+  getUsers,
+  createUsers,
+  userDeposit,
+  changeUserCredit,
+  withdrawCash,
+} = require("./utils");
 
 app.use(express.json());
 
@@ -30,10 +36,16 @@ app.put("/deposit/:id", (req, res) => {
   res.send(userDeposit(userId, depAmnt));
 });
 
+app.put("/credit/:id", (req, res) => {
+  const userId = req.params.id;
+  const credAmnt = req.body.amount;
+  res.send(changeUserCredit(userId, credAmnt));
+});
+
 app.put("/withdraw/:id", (req, res) => {
   const userId = req.params.id;
   const depAmnt = req.body.amount;
-  res.send(userDeposit(userId, depAmnt));
+  res.send(withdrawCash(userId, depAmnt));
 });
 
 //structure:

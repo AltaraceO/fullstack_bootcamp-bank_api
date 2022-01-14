@@ -50,6 +50,39 @@ const userDeposit = (id, amount) => {
   }
 };
 
+const changeUserCredit = (id, amount) => {
+  checkNumbers(amount);
+
+  const users = getUsers();
+  const currUser = users.find((user) => user.id === Number(id));
+
+  if (currUser) {
+    currUser.credit = amount;
+    updateUsers(users);
+    return `${currUser.userName}'s credit is now ${currUser.credit}`;
+  } else {
+    throw Error(`id: ${id} not found`);
+  }
+};
+
+const withdrawCash = (id, amount) => {
+  checkNumbers(amount);
+
+  const users = getUsers();
+  const currUser = users.find((user) => user.id === Number(id));
+
+  if (currUser) {
+    if (currUser.cash + currUser.credit < amount) {
+      throw Error(`Unable to withdraw ${amount}, increase cash or credit`);
+    }
+    currUser.cash -= amount;
+    updateUsers(users);
+    return `${currUser.userName}'s balance is now ${currUser.cash}`;
+  } else {
+    throw Error(`id: ${id} not found`);
+  }
+};
+
 const checkNumbers = (amount) => {
   const confNum = typeof amount === "number";
   if (amount < 1) {
@@ -64,4 +97,6 @@ module.exports = {
   getUsers,
   createUsers,
   userDeposit,
+  changeUserCredit,
+  withdrawCash,
 };
