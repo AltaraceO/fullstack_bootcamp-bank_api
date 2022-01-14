@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const { getUsers, createUsers } = require("./utils");
+const { getUsers, createUsers, userDeposit } = require("./utils");
 
 app.use(express.json());
 
@@ -15,6 +15,31 @@ app.post("/users", (req, res) => {
   console.log(req.body);
   res.send(createUsers(req.body));
 });
+
+//structure:
+//{
+//     "userName": "Beth",
+//     "id": 6,
+//     "cash": 0,
+//     "credit": 100
+// }
+
+app.put("/deposit/:id", (req, res) => {
+  const userId = req.params.id;
+  const depAmnt = req.body.amount;
+  res.send(userDeposit(userId, depAmnt));
+});
+
+app.put("/withdraw/:id", (req, res) => {
+  const userId = req.params.id;
+  const depAmnt = req.body.amount;
+  res.send(userDeposit(userId, depAmnt));
+});
+
+//structure:
+// {
+//     "amount" : 3330
+// }
 
 //
 
