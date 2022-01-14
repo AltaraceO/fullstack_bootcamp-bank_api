@@ -6,6 +6,7 @@ const {
   userDeposit,
   changeUserCredit,
   withdrawCash,
+  moneyTransfer,
 } = require("./utils");
 
 app.use(express.json());
@@ -54,6 +55,13 @@ app.put("/withdraw/:id", (req, res) => {
 // }
 
 //
+app.put("/transfer/:from/:to", (req, res) => {
+  const from = req.params.from;
+  const to = req.params.to;
+  const amt = req.body.amount;
+
+  res.send(moneyTransfer(from, to, amt));
+});
 
 const PORT = 3000;
 

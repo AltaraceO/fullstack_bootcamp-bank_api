@@ -83,6 +83,20 @@ const withdrawCash = (id, amount) => {
   }
 };
 
+const moneyTransfer = (fromId, toId, amount) => {
+  const users = getUsers();
+  const fromUser = users.find((user) => user.id === Number(fromId));
+  const toUser = users.find((user) => user.id === Number(toId));
+  if (fromUser && toUser) {
+    checkNumbers(amount);
+    withdrawCash(fromId, amount);
+    userDeposit(toId, amount);
+    return `${amount} was transferred from ${fromUser.userName} to ${toUser.userName}`;
+  } else {
+    throw Error(`check user ID`);
+  }
+};
+
 const checkNumbers = (amount) => {
   const confNum = typeof amount === "number";
   if (amount < 1) {
@@ -99,4 +113,5 @@ module.exports = {
   userDeposit,
   changeUserCredit,
   withdrawCash,
+  moneyTransfer,
 };
