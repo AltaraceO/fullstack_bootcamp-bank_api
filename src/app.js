@@ -1,3 +1,5 @@
+const path = require("path");
+const hbs = require("hbs");
 const express = require("express");
 const app = express();
 const {
@@ -11,16 +13,25 @@ const {
 
 app.use(express.json());
 
+const publicDir = path.join(__dirname, " ../public");
+const viewsPath = path.join(__dirname, "../views");
+
+app.set("view engine", "hbs");
+app.set("views", viewsPath);
+
+app.use(express.static(publicDir));
+
+console.log(__dirname);
 //
 
-app.get("/users", (req, res) => {
-  console.log(req.body);
-  res.send(getUsers());
+app.get("", (req, res) => {
+  res.render("index", {
+    thing: getUsers().map((e) => e),
+  });
 });
 
 app.post("/users", (req, res) => {
-  console.log(req.body);
-  res.send(createUsers(req.body));
+  res.status(200).send(createUsers(req.body));
 });
 
 //structure:
@@ -30,6 +41,12 @@ app.post("/users", (req, res) => {
 //     "cash": 0,
 //     "credit": 100
 // }
+
+app.get("/deposits", (req, res) => {
+  res.render("deposits", {
+    thing: "something",
+  });
+});
 
 app.put("/deposit/:id", (req, res) => {
   const userId = req.params.id;

@@ -4,7 +4,8 @@ const getUsers = () => {
   try {
     const buffer = fs.readFileSync("./data/users.json");
     const dataJson = buffer.toString();
-    return JSON.parse(dataJson);
+    const result = JSON.parse(dataJson);
+    return result;
   } catch (e) {
     return [];
   }
@@ -44,7 +45,8 @@ const userDeposit = (id, amount) => {
   if (currUser) {
     currUser.cash += amount;
     updateUsers(users);
-    return `${currUser.userName}'s balance is now ${currUser.cash}`;
+    return currUser;
+    // return `${currUser.userName}'s balance is now ${currUser.cash}`;
   } else {
     throw Error(`id: ${id} not found`);
   }
